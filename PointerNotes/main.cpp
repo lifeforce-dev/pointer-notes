@@ -28,21 +28,21 @@ public:
 	OutputHelper() {}
 	~OutputHelper() {}
 
-	void DataAddressOutput(int& a, int& b, char* functionName)
+	void AddressOutput(int& a, int& b, char* functionName)
 	{
 		std::stringstream ss;
 		ss << "Speed address: " << &a << " HP address: " << &b << " | " << functionName << "\n";
 		LOG_DEBUG_CONSOLE(ss.str());
 	}
 
-	void DataValueOutput(int& a, int& b, char* functionName)
+	void ValueOutput(int& a, int& b, char* functionName)
 	{
 		std::stringstream ss;
 		ss << "Speed value: " << a << " HP value: " << b << " | " << functionName << "\n";
 		LOG_DEBUG_CONSOLE(ss.str());
 	};
 
-	void DataPtrAddressOutput(int** ptrA, int** ptrB, char* functionName)
+	void PtrAddressOutput(int** ptrA, int** ptrB, char* functionName)
 	{
 		std::stringstream ss;
 		ss << "Speed* address: " << &(*ptrA) << " HP* address : " << &(*ptrB) << " | " << functionName << "\n";
@@ -50,7 +50,7 @@ public:
 		ss.str(std::string());
 	}
 
-	void DataPtrValueAddressOutput(int* ptrA, int* ptrB, char* functionName)
+	void PtrValueAddressOutput(int* ptrA, int* ptrB, char* functionName)
 	{
 		std::stringstream ss;
 		ss << "Speed* address: " << ptrA << " HP* address : " << ptrB << " | " << functionName << "\n";
@@ -79,11 +79,11 @@ void PassAddressByValue(int* speedAddress, int* hpAddress)
 	*speedAddress = 75;
 	*hpAddress = 1000;
 	// This will print the address of the temporary local pointer itself.
-	helper.DataPtrAddressOutput(&speedAddress, &hpAddress, __FUNCTION__);
+	helper.PtrAddressOutput(&speedAddress, &hpAddress, __FUNCTION__);
 
 	// This will print the address that the pointer stores. 
-	helper.DataPtrValueAddressOutput(speedAddress, hpAddress, __FUNCTION__);
-	helper.DataValueOutput(*speedAddress, *hpAddress, __FUNCTION__);
+	helper.PtrValueAddressOutput(speedAddress, hpAddress, __FUNCTION__);
+	helper.ValueOutput(*speedAddress, *hpAddress, __FUNCTION__);
 
 } // The local speedAddress pointer and hpAddress pointer are destroyed here.
 
@@ -93,8 +93,8 @@ void PassByReference(int& speed, int& hp)
 	speed = 10;
 	hp = 20;
 
-	helper.DataAddressOutput(speed, hp, __FUNCTION__);
-	helper.DataValueOutput(speed, hp, __FUNCTION__);
+	helper.AddressOutput(speed, hp, __FUNCTION__);
+	helper.ValueOutput(speed, hp, __FUNCTION__);
 }// Neither speed, or hp are destroyed here as their lifetime is managed outside of this scope.
 
  // Creates a copy of speed and hp, and stores them into a different address on the stack.
@@ -104,8 +104,8 @@ void PassByValue(int speed, int hp)
 	speed = 10;
 	hp = 20;
 
-	helper.DataAddressOutput(speed, hp, __FUNCTION__);
-	helper.DataValueOutput(speed, hp, __FUNCTION__);
+	helper.AddressOutput(speed, hp, __FUNCTION__);
+	helper.ValueOutput(speed, hp, __FUNCTION__);
 } // Leaving scope, the copy of speed	and hp are destroyed here.
 
 int main()
@@ -115,8 +115,8 @@ int main()
 	int speed = 0;
 	int hp = 0;
 
-	helper.DataAddressOutput(speed, hp, __FUNCTION__);
-	helper.DataValueOutput(speed, hp, __FUNCTION__);
+	helper.AddressOutput(speed, hp, __FUNCTION__);
+	helper.ValueOutput(speed, hp, __FUNCTION__);
 
 	//--------------------------------------------------------------
 	helper.PrintSpacerMessage();
@@ -124,7 +124,7 @@ int main()
 	// What happens when we pass by value?
 	PassByValue(speed, hp);
 
-	helper.DataValueOutput(speed, hp, __FUNCTION__);
+	helper.ValueOutput(speed, hp, __FUNCTION__);
 
 	//--------------------------------------------------------------
 	helper.PrintSpacerMessage();
@@ -132,7 +132,7 @@ int main()
 	// What happens when we pass by reference?
 	PassByReference(speed, hp);
 
-	helper.DataValueOutput(speed, hp, __FUNCTION__);
+	helper.ValueOutput(speed, hp, __FUNCTION__);
 
 	///////////////////////////////////////////////////////////////////////////
 	// Bonus - This explains what was asked about passing an actual address in.
@@ -148,7 +148,7 @@ int main()
 	// This is actually passing the address of speed and hp.
 	PassAddressByValue(&speed, &hp);
 
-	helper.DataValueOutput(speed, hp, __FUNCTION__);
+	helper.ValueOutput(speed, hp, __FUNCTION__);
 
 	return 0;
 }
