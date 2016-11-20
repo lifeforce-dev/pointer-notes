@@ -78,7 +78,11 @@ void PassAddressByValue(int* speedAddress, int* hpAddress)
 	OutputHelper helper;
 	*speedAddress = 75;
 	*hpAddress = 1000;
+
 	// This will print the address of the temporary local pointer itself.
+	// Note: You may notice that the addresses here are the same as the addresses we saw in the last
+	// function which created temporary values. This is just because the system is reusing the same
+	// stack memory that was there before, since it is free for us to do so!
 	helper.PtrAddressOutput(&speedAddress, &hpAddress, __FUNCTION__);
 
 	// This will print the address that the pointer stores. 
